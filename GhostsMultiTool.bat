@@ -29,12 +29,12 @@ echo [1] HWID CHECKER
 echo.
 echo [2] CLEAN
 echo.
-echo [3] COMING SOON
+echo [3] RESET TOOL
 echo.
 set /p op=[40;32mChoose an Option=
 if %op% == 1 goto check
 if %op% == 2 goto check2
-if %op% == 3 goto dumbass
+if %op% == 3 goto pcreset
 goto invalid
 
 :check
@@ -591,7 +591,7 @@ set /p ok=[40;32mChoose an Option=
 if %ok% == 1 goto check
 if %ok% == 2 goto main
 cls
-goto main
+goto invalid
 
 :invalid
 cls
@@ -603,15 +603,154 @@ echo Press anything to continue...
 pause>nul
 goto main
 
-:dumbass
-cls
+:pcreset
 @echo off
-echo.
-echo.
-echo bruh ur retarded its coming soon..
-echo.
-echo.
-echo now press anything to bring ur dumbass back to the main menu
-pause>nul
+set "params=%*"
+cd /d "%~dp0" && ( if exist "%temp%\getadmin.vbs" del "%temp%\getadmin.vbs" ) && fsutil dirty query %systemdrive% 1>nul 2>nul || (  echo Set UAC = CreateObject^("Shell.Application"^) : UAC.ShellExecute "cmd.exe", "/k cd ""%~sdp0"" && %~s0 %params%", "", "runas", 1 >> "%temp%\getadmin.vbs" && "%temp%\getadmin.vbs" && exit /B )
 cls
-goto main
+title PC Reset Tool
+
+@echo off
+mode 60,15
+cls
+color 5
+echo.
+echo THIS IS ONLY FOR PEOPLE WHO JUST REINSTALLED WINDOWS
+echo.
+echo [1] KEEP GOING
+echo.
+echo [2] Main Menu
+echo.
+set /p res=[40;32mChoose an Option=
+if %res% == 1 goto start
+if %res% == 2 goto main
+cls
+goto invalid
+
+:start
+echo.
+echo IF YOU DONT HAVE WINDOWS DEFENDER DISABLED, DISABLE IT NOW
+echo.
+pause
+reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows Defender" /v "DisableAntiSpyware" /t reg_DWORD /d 1 /f >nul
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v "DisableAntiSpyware" /t "REG_DWORD" /d "1" /f >nul
+reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows Defender" /v "DisableRoutinelyTakingAction" /t reg_DWORD /d 1 /f >nul
+reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows Defender\Policy Manager" /f >nul
+reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows Defender\Real-Time Protection" /v "DisableRealtimeMonitoring" /t reg_DWORD /d 1 /f >nul
+reg add "HKCU\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "DisableNotificationCenter" /t reg_DWORD /d 1 /f >nul
+cls
+
+echo.
+echo MADE BY GHOST 
+echo.
+timeout 3 >nul
+
+echo.
+echo  INFORMATION:
+echo  THE PROGRAM WILL AUTOCLOSE AND RESTART THE PC WHEN COMPLETE.
+echo  EVERYTHING MAY GO WHITE. THIS IS OKAY. JUST LET THE PROGRAM FINISH!
+echo.
+echo Press any key to continue!
+timeout 2 >nul
+pause >nul
+cls
+goto downloads
+
+:downloads
+echo DOWNLOADING STEAM
+start "iexplore.exe" "https://cdn.discordapp.com/attachments/840030032444391425/840030065655021618/SteamSetup.exe"
+timeout 1 >nul
+echo DOWNLOADING EPIC
+start "iexplore.exe" "https://launcher-public-service-prod06.ol.epicgames.com/launcher/api/installer/download/EpicGamesLauncherInstaller.msi"
+timeout 1 >nul
+echo DOWNLOADING DISCORD
+start "iexplore.exe" "https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86"
+timeout 1 >nul
+echo DOWNLOADING PROCESS HACKER 2
+start "iexplore.exe" "https://github.com/processhacker/processhacker/releases/download/v2.39/processhacker-2.39-setup.exe"
+timeout 1 >nul
+echo DOWNLOADING CHEAT ENGINE
+start "iexplore.exe" "https://d7qe0znl1rfet.cloudfront.net/installer/82478496040495083/826801"
+timeout 1 >nul
+cls
+timeout 1 >nul 
+echo Downloading Visual Studio s
+echo MAKE SURE TO USE THIS CODE TO GET VISUAL STUDIO ENTERPRISE FOR 100% FREE!
+echo.
+echo Free Enterprise Code: BF8Y8-GN2QH-T84XB-QVY3B-RC4DF
+echo Tutorial on how to use: https://www.youtube.com/watch?v=mYeuwlLfuwA
+echo.
+start "iexplore.exe" https://cdn.discordapp.com/attachments/840030032444391425/840033250331459604/VS_Enterprise.exe >nul
+start "iexplore.exe" https://cdn.discordapp.com/attachments/840030032444391425/840035503058452570/HOW_TO_USE_VISUAL_STUDIO.txt >nul
+timeout 3 >nul
+goto FPS
+
+:FPS
+echo Changing Windows Power Plan (FPS BOOST)
+powercfg /hibernate off
+powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61
+powercfg /changename e9a42b02-d5df-448d-aa00-03f14749eb61 "Elf's FPS Boost Plan"
+powercfg /change e9a42b02-d5df-448d-aa00-03f14749eb61
+cls
+goto reg
+
+::YOU ONLY NEED TO DO THE THIS PART ONE TIME PER PC RESET.
+:reg
+echo WINDOWS REGISTRYS WILL BE CHANGED. PRESS ANY KEY TO CONTINUE!
+pause >nul
+echo Disable remote assistance
+reg add "HKLM\System\CurrentControlSet\Control\Remote Assistance" /v "fAllowToGetHelp" /t reg_DWORD /d "0" /f
+reg add "HKLM\System\CurrentControlSet\Control\Remote Assistance" /v "fAllowFullControl" /t reg_DWORD /d "0" /f
+reg add "HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services" /v "fDenyTSConnections" /t reg_DWORD /d "1" /f
+reg add "HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services" /v "fAllowUnsolicitedFullControl" /t reg_DWORD /d "0" /f
+reg add "HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services" /v "fAllowUnsolicited" /t reg_DWORD /d "0" /f
+reg add "HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services" /v "fAllowToGetHelp" /t reg_DWORD /d "0" /f
+echo No camera on lock screen (privacy)
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Personalization" /v "NoLockScreenCamera" /t reg_DWORD /d 1 /f
+echo disable Spynet
+reg add "HKLM\SOFTWARE\Microsoft\Windows Defender\Spynet" /v " SpyNetReporting" /t reg_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Microsoft\Windows Defender\Spynet" /v " SubmitSamplesConsent" /t reg_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" /v "SpynetReporting" /t reg_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" /v "SubmitSamplesConsent" /t reg_DWORD /d 2 /f
+echo Remove 3D Objects Folder
+reg Delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}" /f
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}" /f
+reg Delete "HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}" /f
+echo Add "Take Ownership" in context menu
+reg add "HKCR\*\shell\runas" /ve /t reg_SZ /d "Take ownership" /f
+reg add "HKCR\*\shell\runas" /v "HasLUAShield" /t reg_SZ /d "" /f
+reg add "HKCR\*\shell\runas" /v "NoWorkingDirectory" /t reg_SZ /d "" /f
+reg add "HKCR\*\shell\runas\command" /ve /t reg_SZ /d "cmd.exe /c takeown /f \"%%1\" && icacls \"%%1\" /grant administrators:F" /f
+reg add "HKCR\*\shell\runas\command" /v "IsolatedCommand" /t reg_SZ /d "cmd.exe /c takeown /f \"%%1\" && icacls \"%%1\" /grant administrators:F" /f
+reg add "HKCR\Directory\shell\runas" /ve /t reg_SZ /d "Take ownership" /f
+reg add "HKCR\Directory\shell\runas" /v "HasLUAShield" /t reg_SZ /d "" /f
+reg add "HKCR\Directory\shell\runas" /v "NoWorkingDirectory" /t reg_SZ /d "" /f
+reg add "HKCR\Directory\shell\runas\command" /ve /t reg_SZ /d "cmd.exe /c takeown /f \"%%1\" /r /d y && icacls \"%%1\" /grant administrators:F /t" /f
+reg add "HKCR\Directory\shell\runas\command" /v "IsolatedCommand" /t reg_SZ /d "cmd.exe /c takeown /f \"%%1\" /r /d y && icacls \"%%1\" /grant administrators:F /t" /f
+echo No Sticky Keys
+reg add "HKCU\Control Panel\Accessibility\StickyKeys" /v "Flags" /t reg_SZ /d "506" /f
+echo Google is default search engine
+reg add "HKCU\SOFTWARE\Microsoft\Internet Explorer\SearchScopes" /v "DefaultScope" /t reg_SZ /d "{89418666-DF74-4CAC-A2BD-B69FB4A0228A}" /f
+reg add "HKCU\SOFTWARE\Microsoft\Internet Explorer\SearchScopes\{89418666-DF74-4CAC-A2BD-B69FB4A0228A}" /f
+reg add "HKCU\SOFTWARE\Microsoft\Internet Explorer\SearchScopes\{89418666-DF74-4CAC-A2BD-B69FB4A0228A}" /v "DisplayName" /t reg_SZ /d "Google" /f
+reg add "HKCU\SOFTWARE\Microsoft\Internet Explorer\SearchScopes\{89418666-DF74-4CAC-A2BD-B69FB4A0228A}" /v "FaviconURL" /t reg_SZ /d "http://www.google.com/favicon.ico" /f
+reg add "HKCU\SOFTWARE\Microsoft\Internet Explorer\SearchScopes\{89418666-DF74-4CAC-A2BD-B69FB4A0228A}" /v "FaviconURLFallback" /t reg_SZ /d "http://www.google.com/favicon.ico" /f
+reg add "HKCU\SOFTWARE\Microsoft\Internet Explorer\SearchScopes\{89418666-DF74-4CAC-A2BD-B69FB4A0228A}" /v "OSDFileURL" /t reg_SZ /d "http://www.iegallery.com/en-us/AddOns/DownloadAddOn?resourceId=813" /f
+reg add "HKCU\SOFTWARE\Microsoft\Internet Explorer\SearchScopes\{89418666-DF74-4CAC-A2BD-B69FB4A0228A}" /v "ShowSearchSuggestions" /t reg_DWORD /d 1 /f
+reg add "HKCU\SOFTWARE\Microsoft\Internet Explorer\SearchScopes\{89418666-DF74-4CAC-A2BD-B69FB4A0228A}" /v "SuggestionsURL" /t reg_SZ /d "http://clients5.google.com/complete/search?q={searchTerms}&client=ie8&mw={ie:maxWidth}&sh={ie:sectionHeight}&rh={ie:rowHeight}&inputencoding={inputEncoding}&outputencoding={outputEncoding}" /f
+reg add "HKCU\SOFTWARE\Microsoft\Internet Explorer\SearchScopes\{89418666-DF74-4CAC-A2BD-B69FB4A0228A}" /v "SuggestionsURLFallback" /t reg_SZ /d "http://clients5.google.com/complete/search?hl={language}&q={searchTerms}&client=ie8&inputencoding={inputEncoding}&outputencoding={outputEncoding}" /f
+reg add "HKCU\SOFTWARE\Microsoft\Internet Explorer\SearchScopes\{89418666-DF74-4CAC-A2BD-B69FB4A0228A}" /v "TopResultURLFallback" /t reg_SZ /d "" /f
+reg add "HKCU\SOFTWARE\Microsoft\Internet Explorer\SearchScopes\{89418666-DF74-4CAC-A2BD-B69FB4A0228A}" /v "URL" /t reg_SZ /d "http://www.google.com/search?q={searchTerms}&sourceid=ie7&rls=com.microsoft:{language}:{referrer:source}&ie={inputEncoding?}&oe={outputEncoding?}" /f
+echo DISABLE WINDOWS UPDATES
+sc config wuauserv start= disable
+sc config bits start= disable
+sc config DcomLaunch start= disable
+net stop wuauserv
+net stop bits
+net stop DcomLaunch
+goto RESTART
+
+:RESTART
+echo Restart Time!
+timeout 3 >nul
+shutdown -r -t 00
